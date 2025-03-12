@@ -5,6 +5,7 @@
 #include <omp.h>
 #include <iomanip>
 #include <algorithm>
+#include <random>
 
 using namespace std;
 
@@ -74,15 +75,43 @@ pair<long long, vector<int>> tspDynamicProgramming(const vector<vector<int>>& di
 }
 
 int main() {
-    vector<vector<int>> distances = {
-        {0, 10, 15, 20},
-        {10, 0, 35, 25},
-        {15, 35, 0, 30},
-        {20, 25, 30, 0}
-    };
 
-    int numThreads = 4;
+    int numCities = 21;
+    vector<vector<int>> distances(numCities, vector<int>(numCities));
+    random_device rd;
+    mt19937 gen(rd());
+    uniform_int_distribution<> distrib(1, 100);
+
+    for (int i = 0; i < numCities; ++i) {
+        for (int j = 0; j < numCities; ++j) {
+            if (i == j) {
+                distances[i][j] = 0;
+            } else {
+                distances[i][j] = distrib(gen);
+                distances[j][i] = distances[i][j];
+            }
+        }
+    }
+
+    // vector<vector<int>> distances = {
+    //     {0, 10, 15, 20},
+    //     {10, 0, 35, 25},
+    //     {15, 35, 0, 30},
+    //     {20, 25, 30, 0}
+    // };
+
+    int numThreads = 8;
+
+    // Start measuring time
+    double startTime = omp_get_wtime();
+
     pair<long long, vector<int>> result = tspDynamicProgramming(distances, numThreads);
+
+    // End measuring time
+    double endTime = omp_get_wtime();
+
+    // Calculate elapsed time
+    double elapsedTime = endTime - startTime;
 
     cout << "Shortest distance: " << result.first << endl;
     cout << "Shortest path: ";
@@ -90,6 +119,8 @@ int main() {
         cout << city << " ";
     }
     cout << endl;
+
+    cout << "Execution time: " << elapsedTime << " seconds" << endl;
 
     return 0;
 }

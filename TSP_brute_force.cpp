@@ -2,16 +2,16 @@
 #include <vector>
 #include <algorithm>
 #include <climits>
-#include <omp.h> // OpenMP header
+#include <omp.h>
 #include <random>
 
 using namespace std;
 
-int factorial(int n) {
+long long factorial(int n) { // Use long long for factorial
     return (n == 1 || n == 0) ? 1 : n * factorial(n - 1);
 }
 
-vector<int> findShortestRoute(const vector<vector<int>>& distances, int numThreads) {
+vector<int> findShortestRoute(const vector<vector<long long>>& distances, int numThreads) { // distances are long long
     int numCities = distances.size();
     vector<int> cities(numCities);
     for (int i = 0; i < numCities; ++i) {
@@ -19,23 +19,23 @@ vector<int> findShortestRoute(const vector<vector<int>>& distances, int numThrea
     }
 
     vector<int> shortestRoute;
-    int shortestDistance = INT_MAX;
+    long long shortestDistance = LLONG_MAX; // Use long long
 
     #pragma omp parallel num_threads(numThreads)
     {
         vector<int> localShortestRoute;
-        int localShortestDistance = INT_MAX;
+        long long localShortestDistance = LLONG_MAX; // Use long long
 
         #pragma omp for
-        for (int i = 0; i < factorial(numCities - 1); ++i) {
+        for (long long i = 0; i < factorial(numCities - 1); ++i) { // Use long long for loop index
             vector<int> localCities = cities;
             next_permutation(localCities.begin() + 1, localCities.end());
 
-            int currentDistance = 0;
+            long long currentDistance = 0; // Use long long
             for (int j = 0; j < numCities - 1; ++j) {
-                currentDistance += distances[ localCities[j] ][ localCities[j+1] ];
+                currentDistance += distances[localCities[j]][localCities[j + 1]];
             }
-            currentDistance += distances[ localCities[numCities - 1] ][ localCities[0] ]; // add return to the starting city
+            currentDistance += distances[localCities[numCities - 1]][localCities[0]]; // add return to the starting city
 
             if (currentDistance < localShortestDistance) {
                 localShortestDistance = currentDistance;
@@ -56,11 +56,11 @@ vector<int> findShortestRoute(const vector<vector<int>>& distances, int numThrea
 }
 
 int main() {
-    int numCities = 10;
-    vector<vector<int>> distances(numCities, vector<int>(numCities));
+    int numCities = 12;
+    vector<vector<long long>> distances(numCities, vector<long long>(numCities)); // distances are long long
     random_device rd;
     mt19937 gen(rd());
-    uniform_int_distribution<> distrib(1, 100);
+    uniform_int_distribution<long long> distrib(1, 100); // Use long long distribution
 
     for (int i = 0; i < numCities; ++i) {
         for (int j = 0; j < numCities; ++j) {
@@ -73,21 +73,28 @@ int main() {
         }
     }
 
-    // vector<vector<int>> distances = {
-    //     {0, 10, 15, 20},
-    //     {10, 0, 35, 25},
-    //     {15, 35, 0, 30},
-    //     {20, 25, 30, 0}
-    // };
+    int numThreads = 1;
 
-    int numThreads = 64;
+    // Start measuring time
+    double startTime = omp_get_wtime();
+
+    // Perform TSP computation
     vector<int> shortestRoute = findShortestRoute(distances, numThreads);
 
+    // End measuring time
+    double endTime = omp_get_wtime();
+
+    // Calculate elapsed time
+    double elapsedTime = endTime - startTime;
+
+    // Display the results
     cout << "Shortest route: ";
     for (int city : shortestRoute) {
         cout << city << " ";
     }
     cout << shortestRoute[0] << endl;
+
+    cout << "Execution time: " << elapsedTime << " seconds" << endl;
 
     return 0;
 }
