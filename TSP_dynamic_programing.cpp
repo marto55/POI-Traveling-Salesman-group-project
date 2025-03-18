@@ -76,7 +76,7 @@ pair<long long, vector<int>> tspDynamicProgramming(const vector<vector<int>>& di
 
 int main() {
 
-    int numCities = 21;
+    int numCities = 18;
     vector<vector<int>> distances(numCities, vector<int>(numCities));
     random_device rd;
     mt19937 gen(rd());
@@ -100,7 +100,7 @@ int main() {
     //     {20, 25, 30, 0}
     // };
 
-    int numThreads = 8;
+    int numThreads = 1;
 
     // Start measuring time
     double startTime = omp_get_wtime();

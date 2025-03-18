@@ -56,7 +56,7 @@ vector<int> findShortestRoute(const vector<vector<long long>>& distances, int nu
 }
 
 int main() {
-    int numCities = 12;
+    int numCities = 13;
     vector<vector<long long>> distances(numCities, vector<long long>(numCities)); // distances are long long
     random_device rd;
     mt19937 gen(rd());
@@ -73,7 +73,7 @@ int main() {
         }
     }
 
-    int numThreads = 1;
+    int numThreads = 16;
 
     // Start measuring time
     double startTime = omp_get_wtime();

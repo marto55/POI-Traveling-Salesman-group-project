@@ -34,7 +34,7 @@ vector<int> findShortestRoute(const vector<vector<long long>>& distances) { // d
 }
 
 int main() {
-    int numCities = 12;
+    int numCities = 13;
     vector<vector<long long>> distances(numCities, vector<long long>(numCities)); // distances are long long
     random_device rd;
     mt19937 gen(rd());

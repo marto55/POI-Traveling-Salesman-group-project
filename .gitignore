@@ -4,6 +4,9 @@
 #VSCode
 .vscode
 
+#VerySleepy
+*.sleepy
+
 # Compiled Object files
 *.slo
 *.lo
