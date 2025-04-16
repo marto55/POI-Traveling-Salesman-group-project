@@ -6,7 +6,6 @@
 #include <iomanip>
 #include <algorithm>
 #include <random>
-#include <cstdlib> // For atoi
 
 using namespace std;
 

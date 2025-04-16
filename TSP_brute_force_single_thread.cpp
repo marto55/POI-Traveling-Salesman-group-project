@@ -28,13 +28,25 @@ vector<int> findShortestRoute(const vector<vector<long long>>& distances) { // d
             shortestDistance = currentDistance;
             shortestRoute = cities;
         }
-    } while (next_permutation(cities.begin() + 1, cities.end())); // generate nex permutation of cities
+    } while (next_permutation(cities.begin() + 1, cities.end())); // generate next permutation of cities
 
     return shortestRoute;
 }
 
-int main() {
-    int numCities = 14;
+int main(int argc, char *argv[]) {
+    int numCities = 13; // Default number of cities
+
+    // Check if the number of cities is provided as a command-line argument
+    if (argc > 1) {
+        numCities = atoi(argv[1]);
+        if (numCities <= 0) {
+            cerr << "Error: The number of cities must be a positive integer." << endl;
+            return 1;
+        }
+    } else {
+        cout << "Using default number of cities: " << numCities << endl;
+    }
+
     vector<vector<long long>> distances(numCities, vector<long long>(numCities)); // distances are long long
     random_device rd;
     mt19937 gen(rd());

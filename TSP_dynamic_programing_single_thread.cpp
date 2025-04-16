@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <random>
 #include <omp.h> // Include OpenMP
+#include <cstdlib> // For atoi
 
 using namespace std;
 
@@ -70,9 +71,20 @@ pair<long long, vector<int>> tspDynamicProgramming(const vector<vector<int>>& di
     return {shortestDistance, shortestPath};
 }
 
-int main() {
+int main(int argc, char *argv[]) {
+    int numCities = 22; // Default number of cities
 
-    int numCities = 22;
+    // Check if the number of cities is provided as a command-line argument
+    if (argc > 1) {
+        numCities = atoi(argv[1]);
+        if (numCities <= 0) {
+            cerr << "Error: The number of cities must be a positive integer." << endl;
+            return 1;
+        }
+    } else {
+        cout << "Using default number of cities: " << numCities << endl;
+    }
+
     vector<vector<int>> distances(numCities, vector<int>(numCities));
     random_device rd;
     mt19937 gen(rd());
@@ -114,7 +126,7 @@ int main() {
     // }
     // cout << endl;
 
-    cout << elapsedTime  << endl;
+    cout << elapsedTime << endl;
 
     return 0;
 }
