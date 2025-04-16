@@ -6,6 +6,7 @@
 #include <iomanip>
 #include <algorithm>
 #include <random>
+#include <cstdlib> // For atoi
 
 using namespace std;
 
@@ -74,9 +75,32 @@ pair<long long, vector<int>> tspDynamicProgramming(const vector<vector<int>>& di
     return {shortestDistance, shortestPath};
 }
 
-int main() {
+int main(int argc, char *argv[]) {
+    int numCities = 18; // Default number of cities
 
-    int numCities = 18;
+    // Check if the number of cities is provided as a command-line argument
+    if (argc > 1) {
+        numCities = atoi(argv[1]);
+        if (numCities <= 0) {
+            cerr << "Error: The number of cities must be a positive integer." << endl;
+            return 1;
+        }
+    } else {
+        cout << "Using default number of cities: " << numCities << endl;
+    }
+
+    // Check if the number of threads is provided as a command-line argument
+    int numThreads = 1; // Default number of threads
+    if (argc > 2) {
+        numThreads = atoi(argv[2]);
+        if (numThreads <= 0) {
+            cerr << "Error: The number of threads must be a positive integer." << endl;
+            return 1;
+        }
+    } else {
+        cout << "Using default number of threads: " << numThreads << endl;
+    }
+
     vector<vector<int>> distances(numCities, vector<int>(numCities));
     random_device rd;
     mt19937 gen(rd());
@@ -100,7 +124,8 @@ int main() {
     //     {20, 25, 30, 0}
     // };
 
-    int numThreads = 1;
+    // Set the number of threads for OpenMP (although num_threads in the pragma will use it)
+    omp_set_num_threads(numThreads);
 
     // Start measuring time
     double startTime = omp_get_wtime();
@@ -113,14 +138,14 @@ int main() {
     // Calculate elapsed time
     double elapsedTime = endTime - startTime;
 
-    cout << "Shortest distance: " << result.first << endl;
-    cout << "Shortest path: ";
-    for (int city : result.second) {
-        cout << city << " ";
-    }
-    cout << endl;
+    // cout << "Shortest distance: " << result.first << endl;
+    // cout << "Shortest path: ";
+    // for (int city : result.second) {
+    //     cout << city << " ";
+    // }
+    // cout << endl;
 
-    cout << "Execution time: " << elapsedTime << " seconds" << endl;
+    cout << elapsedTime << endl;
 
     return 0;
 }

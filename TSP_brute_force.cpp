@@ -55,8 +55,32 @@ vector<int> findShortestRoute(const vector<vector<long long>>& distances, int nu
     return shortestRoute;
 }
 
-int main() {
-    int numCities = 13;
+int main(int argc, char *argv[]) {
+    int numCities = 13; // Default number of cities
+
+    // Check if the number of cities is provided as a command-line argument
+    if (argc > 1) {
+        numCities = atoi(argv[1]);
+        if (numCities <= 0) {
+            cerr << "Error: The number of cities must be a positive integer." << endl;
+            return 1;
+        }
+    } else {
+        cout << "Using default number of cities: " << numCities << endl;
+    }
+
+    // Check if the number of threads is provided as a command-line argument
+    int numThreads = 1; // Default number of threads
+    if (argc > 2) {
+        numThreads = atoi(argv[2]);
+        if (numThreads <= 0) {
+            cerr << "Error: The number of threads must be a positive integer." << endl;
+            return 1;
+        }
+    } else {
+        cout << "Using default number of threads: " << numThreads << endl;
+    }
+
     vector<vector<long long>> distances(numCities, vector<long long>(numCities)); // distances are long long
     random_device rd;
     mt19937 gen(rd());
@@ -73,7 +97,8 @@ int main() {
         }
     }
 
-    int numThreads = 16;
+    // Set the number of threads for OpenMP (although num_threads in the pragma will use it)
+    omp_set_num_threads(numThreads);
 
     // Start measuring time
     double startTime = omp_get_wtime();
@@ -88,13 +113,13 @@ int main() {
     double elapsedTime = endTime - startTime;
 
     // Display the results
-    cout << "Shortest route: ";
-    for (int city : shortestRoute) {
-        cout << city << " ";
-    }
-    cout << shortestRoute[0] << endl;
+    // cout << "Shortest route: ";
+    // for (int city : shortestRoute) {
+    //     cout << city << " ";
+    // }
+    // cout << shortestRoute[0] << endl;
 
-    cout << "Execution time: " << elapsedTime << " seconds" << endl;
+    cout << elapsedTime << endl;
 
     return 0;
 }

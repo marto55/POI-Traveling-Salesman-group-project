@@ -34,7 +34,7 @@ vector<int> findShortestRoute(const vector<vector<long long>>& distances) { // d
 }
 
 int main() {
-    int numCities = 13;
+    int numCities = 14;
     vector<vector<long long>> distances(numCities, vector<long long>(numCities)); // distances are long long
     random_device rd;
     mt19937 gen(rd());
@@ -64,13 +64,13 @@ int main() {
     double elapsedTime = endTime - startTime;
 
     // Display the results
-    cout << "Shortest route: ";
-    for (int city : shortestRoute) {
-        cout << city << " ";
-    }
-    cout << shortestRoute[0] << endl;
+    // cout << "Shortest route: ";
+    // for (int city : shortestRoute) {
+    //     cout << city << " ";
+    // }
+    // cout << shortestRoute[0] << endl;
 
-    cout << "Execution time: " << elapsedTime << " seconds" << endl;
+    cout << elapsedTime << endl;
 
     return 0;
 }

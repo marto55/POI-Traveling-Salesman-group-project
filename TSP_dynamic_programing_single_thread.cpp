@@ -107,14 +107,14 @@ int main() {
     // Calculate elapsed time
     double elapsedTime = endTime - startTime;
 
-    cout << "Shortest distance: " << result.first << endl;
-    cout << "Shortest path: ";
-    for (int city : result.second) {
-        cout << city << " ";
-    }
-    cout << endl;
+    // cout << "Shortest distance: " << result.first << endl;
+    // cout << "Shortest path: ";
+    // for (int city : result.second) {
+    //     cout << city << " ";
+    // }
+    // cout << endl;
 
-    cout << "Execution time: " << elapsedTime << " seconds" << endl;
+    cout << elapsedTime  << endl;
 
     return 0;
 }
