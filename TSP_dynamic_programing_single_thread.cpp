@@ -5,8 +5,7 @@
 #include <iomanip>
 #include <algorithm>
 #include <random>
-#include <omp.h> // Include OpenMP
-#include <cstdlib> // For atoi
+#include <omp.h>
 
 using namespace std;
 
